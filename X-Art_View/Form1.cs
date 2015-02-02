@@ -127,10 +127,11 @@ namespace X_Art_View
                 this.trackBar1.Value = currentIndex + 1;
                 this.lbl_ViewProgress.Text = (currentIndex + 1) + "/" + AllList.Count;
                 var m = this.AllList[currentIndex];
-                this.pictureBox1.Image = Image.FromFile(m.CoverFile);
+                
                 this.lbl_desc.Text = m.Description;
                 this.lbl_title.Text = m.Title;
                 this.lbl_type.Text = m.Type;
+                this.pictureBox1.Image = Image.FromFile(m.CoverFile);
             }
             catch (Exception)
             {
@@ -221,6 +222,10 @@ namespace X_Art_View
             {
                 fs.Close();
             }
+
+            ModelViewer mv = new ModelViewer(AllModels);
+            mv.ModelList = AllModels;
+            mv.Show();
         }
 
         #region GoTo Buttons

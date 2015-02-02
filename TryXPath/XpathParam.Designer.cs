@@ -28,11 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.txt_xpath = new System.Windows.Forms.TextBox();
             this.btn_apply = new System.Windows.Forms.Button();
             this.lbl_mutiResult = new System.Windows.Forms.Label();
             this.btn_SViewer = new System.Windows.Forms.Button();
             this.txt_Name = new System.Windows.Forms.TextBox();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.innerTextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.attribhrefValueToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.attribsrcValueToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.lbl_endFix = new System.Windows.Forms.Label();
+            this.nullToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // txt_xpath
@@ -80,10 +88,59 @@
             this.txt_Name.TabIndex = 5;
             this.txt_Name.Text = "Selector";
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.innerTextToolStripMenuItem,
+            this.attribhrefValueToolStripMenuItem,
+            this.attribsrcValueToolStripMenuItem,
+            this.nullToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(175, 114);
+            // 
+            // innerTextToolStripMenuItem
+            // 
+            this.innerTextToolStripMenuItem.Name = "innerTextToolStripMenuItem";
+            this.innerTextToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.innerTextToolStripMenuItem.Text = "InnerText";
+            this.innerTextToolStripMenuItem.Click += new System.EventHandler(this.innerTextToolStripMenuItem_Click);
+            // 
+            // attribhrefValueToolStripMenuItem
+            // 
+            this.attribhrefValueToolStripMenuItem.Name = "attribhrefValueToolStripMenuItem";
+            this.attribhrefValueToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.attribhrefValueToolStripMenuItem.Text = "Attrib[href].Value";
+            this.attribhrefValueToolStripMenuItem.Click += new System.EventHandler(this.attribhrefValueToolStripMenuItem_Click);
+            // 
+            // attribsrcValueToolStripMenuItem
+            // 
+            this.attribsrcValueToolStripMenuItem.Name = "attribsrcValueToolStripMenuItem";
+            this.attribsrcValueToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.attribsrcValueToolStripMenuItem.Text = "Attrib[src].Value";
+            this.attribsrcValueToolStripMenuItem.Click += new System.EventHandler(this.attribsrcValueToolStripMenuItem_Click);
+            // 
+            // lbl_endFix
+            // 
+            this.lbl_endFix.AutoSize = true;
+            this.lbl_endFix.Location = new System.Drawing.Point(447, 9);
+            this.lbl_endFix.Name = "lbl_endFix";
+            this.lbl_endFix.Size = new System.Drawing.Size(11, 12);
+            this.lbl_endFix.TabIndex = 7;
+            this.lbl_endFix.Text = "-";
+            // 
+            // nullToolStripMenuItem
+            // 
+            this.nullToolStripMenuItem.Name = "nullToolStripMenuItem";
+            this.nullToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.nullToolStripMenuItem.Text = "Null";
+            this.nullToolStripMenuItem.Click += new System.EventHandler(this.nullToolStripMenuItem_Click);
+            // 
             // XpathParam
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ContextMenuStrip = this.contextMenuStrip1;
+            this.Controls.Add(this.lbl_endFix);
             this.Controls.Add(this.txt_Name);
             this.Controls.Add(this.btn_SViewer);
             this.Controls.Add(this.lbl_mutiResult);
@@ -91,6 +148,7 @@
             this.Controls.Add(this.txt_xpath);
             this.Name = "XpathParam";
             this.Size = new System.Drawing.Size(608, 27);
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -103,5 +161,11 @@
         private System.Windows.Forms.Label lbl_mutiResult;
         private System.Windows.Forms.Button btn_SViewer;
         private System.Windows.Forms.TextBox txt_Name;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem innerTextToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem attribhrefValueToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem attribsrcValueToolStripMenuItem;
+        public System.Windows.Forms.Label lbl_endFix;
+        private System.Windows.Forms.ToolStripMenuItem nullToolStripMenuItem;
     }
 }

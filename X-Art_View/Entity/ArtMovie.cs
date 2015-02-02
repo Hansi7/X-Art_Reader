@@ -12,7 +12,9 @@ namespace X_Art_View
         public string  Url { get; set; }
         public string  Title { get; set; }
         public string CoverFile { get; set; }
+        public string CoverFile2 { get; set; }
         public string CoverLink { get; set; }
+        public string CoverLink2 { get; set; }
         public string Description { get; set; }
         public override string ToString()
         {

@@ -60,7 +60,7 @@
             // btn_Video
             // 
             this.btn_Video.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btn_Video.Location = new System.Drawing.Point(53, 12);
+            this.btn_Video.Location = new System.Drawing.Point(76, 10);
             this.btn_Video.Name = "btn_Video";
             this.btn_Video.Size = new System.Drawing.Size(75, 23);
             this.btn_Video.TabIndex = 0;
@@ -85,7 +85,7 @@
             0,
             0});
             this.nud_maxPage.Name = "nud_maxPage";
-            this.nud_maxPage.Size = new System.Drawing.Size(35, 21);
+            this.nud_maxPage.Size = new System.Drawing.Size(58, 21);
             this.nud_maxPage.TabIndex = 1;
             this.nud_maxPage.Value = new decimal(new int[] {
             1,
@@ -276,7 +276,7 @@
             // btn_AllUpdates
             // 
             this.btn_AllUpdates.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btn_AllUpdates.Location = new System.Drawing.Point(134, 12);
+            this.btn_AllUpdates.Location = new System.Drawing.Point(157, 10);
             this.btn_AllUpdates.Name = "btn_AllUpdates";
             this.btn_AllUpdates.Size = new System.Drawing.Size(93, 23);
             this.btn_AllUpdates.TabIndex = 12;
@@ -295,7 +295,7 @@
             // btn_model
             // 
             this.btn_model.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btn_model.Location = new System.Drawing.Point(233, 12);
+            this.btn_model.Location = new System.Drawing.Point(256, 10);
             this.btn_model.Name = "btn_model";
             this.btn_model.Size = new System.Drawing.Size(93, 23);
             this.btn_model.TabIndex = 13;

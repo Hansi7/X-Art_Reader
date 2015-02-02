@@ -107,6 +107,26 @@ namespace TryXPath
             }
         }
 
+        private void innerTextToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.lbl_endFix.Text = ".InnerText.Trim()";
+        }
+
+        private void attribhrefValueToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.lbl_endFix.Text = ".Attributes[\"href\"].Value.ToString().Trim()";
+        }
+
+        private void attribsrcValueToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.lbl_endFix.Text = ".Attributes[\"src\"].Value.ToString().Trim()";
+        }
+
+        private void nullToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.lbl_endFix.Text = "";
+        }
+
 
     }
 }
