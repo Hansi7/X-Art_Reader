@@ -51,6 +51,7 @@
             this.btn_AllUpdates = new System.Windows.Forms.Button();
             this.bgw_AllUpdatesWorker = new System.ComponentModel.BackgroundWorker();
             this.btn_model = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.nud_maxPage)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -303,11 +304,23 @@
             this.btn_model.UseVisualStyleBackColor = true;
             this.btn_model.Click += new System.EventHandler(this.btn_model_Click);
             // 
+            // button1
+            // 
+            this.button1.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button1.Location = new System.Drawing.Point(411, 8);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 14;
+            this.button1.Text = "BuildDB";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(617, 581);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.btn_model);
             this.Controls.Add(this.btn_AllUpdates);
             this.Controls.Add(this.lbl_ViewProgress);
@@ -359,6 +372,7 @@
         private System.ComponentModel.BackgroundWorker bgw_AllUpdatesWorker;
         private System.Windows.Forms.Label lbl_type;
         private System.Windows.Forms.Button btn_model;
+        private System.Windows.Forms.Button button1;
     }
 }
 

@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DB\DBControl.cs" />
     <Compile Include="Entity\ArtModel.cs" />
     <Compile Include="Entity\ArtMovie.cs" />
     <Compile Include="CoverProcessor.cs" />

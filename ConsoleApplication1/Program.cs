@@ -9,16 +9,32 @@ namespace ConsoleApplication1
     {
         static void Main(string[] args)
         {
+
+            //GetHegreArtCovers();
+
+
+            //testDB();
+            //Console.ReadKey();
+        }
+
+        private static void testDB()
+        {
+        }
+
+        #region GetHegreArtCovers
+        private static void GetHegreArtCovers()
+        {
             MyBackGroundWorker<object, List<X_Art_View.ArtMovie>> mbg = new MyBackGroundWorker<object, List<X_Art_View.ArtMovie>>(10);
 
             mbg.DoSingleWork += mbg_DoSingleWork;
             mbg.ProgressChanged += mbg_ProgressChanged;
             mbg.RunWorkCompleted += mbg_RunWorkCompleted;
-            
-            List<object> list = new List<object>()
+
+            List<object> list = new List<object>();
+            for (int i = 1; i < 41; i++)
             {
-            11,12,13,14,15,16,17,18,19,20
-            };
+                list.Add(i);
+            }
 
             mbg.Inputs = list;
             mbg.RunWorkerAsync();
@@ -37,7 +53,7 @@ namespace ConsoleApplication1
         {
             Console.WriteLine(e.ProgressPercentage + "% ====");
         }
-        
+
         static void mbg_DoSingleWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
             X_Art_View.HegrePage p = new X_Art_View.HegrePage();
@@ -83,7 +99,7 @@ namespace ConsoleApplication1
             h.CompleteOneItem += h_CompleteOneItem;
             h.IsDownloadBoardPicture = true;
             h.IsDownloadCoverPicture = true;
-            for (int i = 1  ; i < 11; i++)
+            for (int i = 1; i < 11; i++)
             {
                 list.AddRange(h.GetGalleries(i));
                 (sender as System.ComponentModel.BackgroundWorker).ReportProgress(i * 10);
@@ -93,6 +109,10 @@ namespace ConsoleApplication1
         static void h_CompleteOneItem(object sender, X_Art_View.OneCompleteEventArg e)
         {
             Console.WriteLine(e.Tag as string);
-        }
+        } 
+        #endregion
+
+
+
     }
 }

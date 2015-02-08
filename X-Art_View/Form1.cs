@@ -246,5 +246,15 @@ namespace X_Art_View
 
 
         #endregion
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            DB.DBControl con = new DB.DBControl();
+            foreach (ArtMovie item in AllList)
+            {
+                con.Insert(item);
+            }
+            MessageBox.Show("Test");
+        }
     }
 }

@@ -92,8 +92,8 @@ namespace X_Art_View
                 var desc = item.SelectSingleNode(".//span[@class='blurb']").InnerText;
                 var linker = item.SelectSingleNode(".//a").Attributes["href"].Value.ToString();
                 var image = item.SelectSingleNode(".//img").Attributes["src"].Value.ToString();
-
-                var tpe = item.SelectNodes(".//span[@class='title']")[1].InnerText;
+                var publishDate = item.SelectNodes(".//span[@class='title']")[1].InnerText;
+                var tpe = item.SelectNodes(".//span[@class='title']")[2].InnerText;
 
                 ArtMovie m = new ArtMovie()
                 {
@@ -101,6 +101,7 @@ namespace X_Art_View
                     Url = linker,
                     Description = desc,
                     CoverLink = image,
+                    PublishDate = publishDate,
                     Type = tpe
                 };
 

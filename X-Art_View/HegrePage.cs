@@ -49,10 +49,43 @@ namespace X_Art_View
             {
                 var title = item.SelectSingleNode(".//h4").InnerText.Trim();
                 title = title.Substring(title.IndexOf("\t\t\t\t\t\t")).Trim();
-                var date = item.SelectSingleNode(".//h4/small").InnerText.Trim();
-                var link = item.SelectSingleNode("./div/a").Attributes["href"].Value.ToString().Trim();
-                var coverPicURL = item.SelectSingleNode(".//div[@class='cover-links']/a[1]").Attributes["href"].Value.ToString().Trim();
-                var boardPicURL = item.SelectSingleNode(".//div[@class='cover-links']/a[2]").Attributes["href"].Value.ToString().Trim();
+                string date;
+                try
+                {
+                    date = item.SelectSingleNode(".//h4/small").InnerText.Trim();
+                }
+                catch
+                {
+                    date="";
+                }
+                string link;
+                try
+                {
+                    
+                    link = item.SelectSingleNode("./div/a").Attributes["href"].Value.ToString().Trim();
+                }
+                catch (Exception)
+                {
+                    link = "";
+                }
+                string coverPicURL;
+                try
+                {
+                    coverPicURL = item.SelectSingleNode(".//div[@class='cover-links']/a[1]").Attributes["href"].Value.ToString().Trim();
+                }
+                catch 
+                {
+                    coverPicURL = "";
+                }
+                string boardPicURL;
+                try
+                {
+                    boardPicURL = item.SelectSingleNode(".//div[@class='cover-links']/a[2]").Attributes["href"].Value.ToString().Trim();
+                }
+                catch
+                {
+                    boardPicURL = ""; 
+                }
 
                 ArtMovie m = new ArtMovie()
                 {
