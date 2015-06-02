@@ -29,7 +29,13 @@ namespace TryXPath
 
         private void button1_Click(object sender, EventArgs e)
         {
-            html =  this.wc.DownloadString(txt_URL.Text);
+            //html =  this.wc.DownloadString(txt_URL.Text);
+
+            var bytesData = this.wc.DownloadData(txt_URL.Text);
+
+            html = Encoding.UTF8.GetString(bytesData);
+
+
             xParam_Section.SelectorHtml = html;
             txt_source.Text = html;
             MessageBox.Show("LOADED!");

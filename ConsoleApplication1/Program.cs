@@ -10,11 +10,11 @@ namespace ConsoleApplication1
         static void Main(string[] args)
         {
 
-            //GetHegreArtCovers();
+            GetHegreArtCovers();
 
 
             //testDB();
-            //Console.ReadKey();
+            Console.ReadKey();
         }
 
         private static void testDB()
@@ -24,14 +24,14 @@ namespace ConsoleApplication1
         #region GetHegreArtCovers
         private static void GetHegreArtCovers()
         {
-            MyBackGroundWorker<object, List<X_Art_View.ArtMovie>> mbg = new MyBackGroundWorker<object, List<X_Art_View.ArtMovie>>(10);
+            MyBackGroundWorker<object, List<X_Art_View.ArtMovie>> mbg = new MyBackGroundWorker<object, List<X_Art_View.ArtMovie>>(1);
 
             mbg.DoSingleWork += mbg_DoSingleWork;
             mbg.ProgressChanged += mbg_ProgressChanged;
             mbg.RunWorkCompleted += mbg_RunWorkCompleted;
 
             List<object> list = new List<object>();
-            for (int i = 1; i < 41; i++)
+            for (int i = 41; i < 81; i++)
             {
                 list.Add(i);
             }
@@ -61,7 +61,8 @@ namespace ConsoleApplication1
             p.IsDownloadCoverPicture = true;
             p.CompleteOneItem += p_CompleteOneItem;
             int k = ((int)e.Argument);
-            e.Result = p.GetGalleries(k);
+            //e.Result = p.GetGalleries(k);
+            e.Result = p.GetVideos(k);
         }
 
         static void p_CompleteOneItem(object sender, X_Art_View.OneCompleteEventArg e)
@@ -101,7 +102,8 @@ namespace ConsoleApplication1
             h.IsDownloadCoverPicture = true;
             for (int i = 1; i < 11; i++)
             {
-                list.AddRange(h.GetGalleries(i));
+                //list.AddRange(h.GetGalleries(i));
+                list.AddRange(h.GetVideos(i));
                 (sender as System.ComponentModel.BackgroundWorker).ReportProgress(i * 10);
             }
         }

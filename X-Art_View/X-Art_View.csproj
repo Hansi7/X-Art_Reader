@@ -58,6 +58,7 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="HegrePage.cs" />
+    <Compile Include="MagnetGet.cs" />
     <Compile Include="ModelViewer.cs">
       <SubType>Form</SubType>
     </Compile>

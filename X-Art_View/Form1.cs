@@ -90,9 +90,11 @@ namespace X_Art_View
                 {
                     BinaryFormatter bf = new BinaryFormatter();
                     this.AllList = bf.Deserialize(fs) as List<ArtMovie>;
+                    MessageBox.Show("Loaded!");
                 }
+                
             }
-            MessageBox.Show("Loaded!");
+            
         }
 
         #region UI Control
@@ -132,6 +134,7 @@ namespace X_Art_View
                 this.lbl_title.Text = m.Title;
                 this.lbl_type.Text = m.Type;
                 this.pictureBox1.Image = Image.FromFile(m.CoverFile);
+                this.pictureBox1.Tag = m.CoverFile;
             }
             catch (Exception)
             {
@@ -255,6 +258,19 @@ namespace X_Art_View
                 con.Insert(item);
             }
             MessageBox.Show("Test");
+        }
+
+        private void pictureBox1_DoubleClick(object sender, EventArgs e)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start((sender as PictureBox).Tag.ToString());
+            }
+            catch 
+            {
+                
+            }
+            
         }
     }
 }

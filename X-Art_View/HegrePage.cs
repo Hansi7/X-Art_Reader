@@ -123,7 +123,7 @@ namespace X_Art_View
         public List<ArtMovie> GetVideos(int page)
         {
             List<ArtMovie> HegreVideos = new List<ArtMovie>();
-            HtmlAgilityPack.HtmlDocument doc = hw.Load("http://www.hegre-art.com/galleries?galleries_page=" + page.ToString());
+            HtmlAgilityPack.HtmlDocument doc = hw.Load("http://hegre-art.com/films?films_page=" + page.ToString());
 
             var nodes = doc.DocumentNode.SelectNodes("//div[@class='item']");
 
@@ -153,7 +153,7 @@ namespace X_Art_View
 
                     if (this.cp == null)
                     {
-                        this.cp = new CoverProcessor("HegreCovers");
+                        this.cp = new CoverProcessor("VideoHegreCovers");
                     }
                     m.CoverFile = cp.save(coverPicUrl, title + ".jpg");
 
@@ -162,7 +162,7 @@ namespace X_Art_View
                 {
                     if (this.cp == null)
                     {
-                        this.cp = new CoverProcessor("HegreCovers");
+                        this.cp = new CoverProcessor("VideoHegreCovers");
                     }
                     m.CoverFile2 = cp.save(boardPicUrl, title + "_Board.jpg");
                 }
