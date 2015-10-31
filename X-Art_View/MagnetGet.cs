@@ -20,9 +20,6 @@ namespace X_Art_View
             HtmlDocument doc = new HtmlDocument();
             doc.LoadHtml(wc.DownloadString(DB.Table.Rows[0][1]+ keyWord));
             doc.DocumentNode.SelectNodes("//tr[@class='odd'] or tr[@class='even']");//这没有完成
-
-
-
             return string.Empty;
         }
 

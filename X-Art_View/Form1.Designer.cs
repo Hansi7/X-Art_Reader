@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.btn_Video = new System.Windows.Forms.Button();
             this.bgw_VideoWorker = new System.ComponentModel.BackgroundWorker();
             this.nud_maxPage = new System.Windows.Forms.NumericUpDown();
@@ -52,10 +53,13 @@
             this.bgw_AllUpdatesWorker = new System.ComponentModel.BackgroundWorker();
             this.btn_model = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.复制该标题ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.nud_maxPage)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btn_Video
@@ -135,6 +139,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.ContextMenuStrip = this.contextMenuStrip1;
             this.groupBox1.Controls.Add(this.lbl_type);
             this.groupBox1.Controls.Add(this.btn_Extratorrent);
             this.groupBox1.Controls.Add(this.btn_TorrentZ);
@@ -316,6 +321,20 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.复制该标题ToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(153, 48);
+            // 
+            // 复制该标题ToolStripMenuItem
+            // 
+            this.复制该标题ToolStripMenuItem.Name = "复制该标题ToolStripMenuItem";
+            this.复制该标题ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.复制该标题ToolStripMenuItem.Text = "复制该标题";
+            this.复制该标题ToolStripMenuItem.Click += new System.EventHandler(this.复制该标题ToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -343,6 +362,7 @@
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -374,6 +394,8 @@
         private System.Windows.Forms.Label lbl_type;
         private System.Windows.Forms.Button btn_model;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem 复制该标题ToolStripMenuItem;
     }
 }
 

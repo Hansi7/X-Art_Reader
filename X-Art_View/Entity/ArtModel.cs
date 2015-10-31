@@ -14,6 +14,7 @@ namespace X_Art_View
         public string Rate { get; set; }
         public string PictrueUrl { get; set; }
         public string PictureFile { get; set; }
+        public string ModelURL { get; set; }
 
         public override string ToString()
         {

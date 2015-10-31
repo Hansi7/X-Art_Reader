@@ -272,5 +272,10 @@ namespace X_Art_View
             }
             
         }
+
+        private void 复制该标题ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText(lbl_title.Text);
+        }
     }
 }

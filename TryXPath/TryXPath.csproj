@@ -50,9 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ColorTextBox.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Include="ColorTextBox.cs" />
     <Compile Include="ColorTextBox.Designer.cs">
       <DependentUpon>ColorTextBox.cs</DependentUpon>
     </Compile>

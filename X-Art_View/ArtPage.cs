@@ -26,74 +26,37 @@ namespace X_Art_View
         System.Net.WebClient wc;
 
         CoverProcessor cp;
-
         public List<ArtMovie> GetVideoPage(int p)
         {
-            var html = wc.DownloadString("http://www.x-art.com/ajax_process.php?action=allvideos&page=" + p + "&catname=&order=recent");
-
-            HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
-            doc.LoadHtml(html);
-
-            var nodes = doc.DocumentNode.SelectNodes("//a[@class='image']");
-
-            List<ArtMovie> list = new List<ArtMovie>();
-            if (nodes == null)
+            var html = wc.DownloadString("http://www.x-art.com/index.php?show=videos&pref=items&page=" + p + "&catname=All&order=recent");
+                                          
+            string[] sep = new string[] { "<!--------------------------------------- ITEM -->", "<!--------------------------------------- finItem -->" };
+            var itemHtml = html.Split(sep, StringSplitOptions.RemoveEmptyEntries);
+            List<string> item12 = new List<string>();
+            for (int i = 0; i < itemHtml.Length; i++)
             {
-                return list;
-            }
-            foreach (var item in nodes)
-            {
-                var title = item.SelectSingleNode(".//b").InnerText;
-                //var desc = item.SelectSingleNode(".//p").InnerText;
-                var desc = item.SelectSingleNode(".//span[@class='blurb']").InnerText;
-                var linker = item.Attributes["href"].Value.ToString();
-                var image = item.ChildNodes["img"].Attributes["src"].Value.ToString();
-
-                ArtMovie m = new ArtMovie()
+                itemHtml[i] = itemHtml[i].Replace("\\n", "");
+                itemHtml[i] = itemHtml[i].Replace("\\", "");
+                itemHtml[i] = itemHtml[i].Trim();
+                if (itemHtml[i] != "")
                 {
-                    Title = title,
-                    Url = linker,
-                    Description = desc,
-                    CoverLink = image,
-                    Type = "Video"
-                };
-
-                if (this._isNeedDownloadCover)
-                {
-                    if (this.cp == null)
-                    {
-                        this.cp = new CoverProcessor("Covers");
-                    }
-                    m.CoverFile = cp.save(image, title + ".jpg");
+                    item12.Add(itemHtml[i]);
                 }
-                list.Add(m);
             }
-            return list;
-        }
-
-        public List<ArtMovie> GetAllUpdatePage(int p)
-        {
-            var html = wc.DownloadString("http://www.x-art.com/ajax_process.php?action=allupdates&page="+p+"&catname=&order=recent");
 
             HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
-            doc.LoadHtml(html);
-
-            var nodes = doc.DocumentNode.SelectNodes("//td");
-
             List<ArtMovie> list = new List<ArtMovie>();
-            if (nodes == null)
+            for (int i = 1; i < item12.Count - 1; i++)
             {
-                return list;
-            }
-            foreach (var item in nodes)
-            {
-                var title = item.SelectSingleNode(".//b").InnerText;
+                doc.LoadHtml(item12[i]);
+
+                var title = doc.DocumentNode.SelectSingleNode("//h1").InnerText;
                 //var desc = item.SelectSingleNode(".//p").InnerText;
-                var desc = item.SelectSingleNode(".//span[@class='blurb']").InnerText;
-                var linker = item.SelectSingleNode(".//a").Attributes["href"].Value.ToString();
-                var image = item.SelectSingleNode(".//img").Attributes["src"].Value.ToString();
-                var publishDate = item.SelectNodes(".//span[@class='title']")[1].InnerText;
-                var tpe = item.SelectNodes(".//span[@class='title']")[2].InnerText;
+                var desc = doc.DocumentNode.SelectSingleNode("//p/p").InnerText;
+                var linker = doc.DocumentNode.SelectSingleNode("//a").Attributes["href"].Value;
+                var image = doc.DocumentNode.SelectSingleNode("//img").Attributes["src"].Value;
+                var publishDate = doc.DocumentNode.SelectSingleNode("//h2[2]").InnerText.Trim();
+                var tpe = doc.DocumentNode.SelectSingleNode("//h2[1]").InnerText.Trim();
 
                 ArtMovie m = new ArtMovie()
                 {
@@ -114,54 +77,136 @@ namespace X_Art_View
                     m.CoverFile = cp.save(image, title + ".jpg");
                 }
                 list.Add(m);
+
             }
             return list;
         }
 
-        public List<ArtModel> GetAllModels()
+
+        public List<ArtMovie> GetAllUpdatePage(int p)
         {
-            var html = wc.DownloadString("http://www.x-art.com/models/index.php?sort=recent&newest=1");
+            var html = wc.DownloadString("http://www.x-art.com/index.php?show=galleries&pref=items&page=" + p + "&catname=all&order=recent");
+
+            string[] sep = new string[] { "<!--------------------------------------- ITEM -->", "<!--------------------------------------- finItem -->" };
+            var itemHtml = html.Split(sep, StringSplitOptions.RemoveEmptyEntries);
+            List<string> item12 = new List<string>();
+            for (int i = 0; i < itemHtml.Length; i++)
+            {
+                itemHtml[i] = itemHtml[i].Replace("\\n", "");
+                itemHtml[i] = itemHtml[i].Replace("\\", "");
+                itemHtml[i] = itemHtml[i].Trim();
+                if (itemHtml[i]!="")
+                {
+                    item12.Add(itemHtml[i]);
+                }
+            }
 
             HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
-            doc.LoadHtml(html);
-
-            var nodes = doc.DocumentNode.SelectNodes("//a[@class='image']");
-
-            List<ArtModel> list = new List<ArtModel>();
-            if (nodes == null)
+            List<ArtMovie> list = new List<ArtMovie>();
+            for (int i = 1; i < item12.Count - 1; i++)
             {
-                return list;
-            }
-            foreach (var item in nodes)
-            {
+                doc.LoadHtml(item12[i]);
 
-                var name = item.SelectSingleNode(".//span[@class='title']").InnerText;
-                var ageAndCountry = item.SelectSingleNode(".//span[@class='title'][2]").InnerText;
-                var country = ageAndCountry.Substring(ageAndCountry.IndexOf(":") + 1).Trim();
-                var age = ageAndCountry.Substring(0,ageAndCountry.IndexOf(":")).Replace("Age","").Trim();
-                
-                var rate = "";
-                var url = item.SelectSingleNode(".//img[@src]").Attributes["src"].Value.ToString();
+                var title = doc.DocumentNode.SelectSingleNode("//h1").InnerText;
+                //var desc = item.SelectSingleNode(".//p").InnerText;
+                var desc = doc.DocumentNode.SelectSingleNode("//p/p").InnerText;
+                var linker = doc.DocumentNode.SelectSingleNode("//a").Attributes["href"].Value;
+                var image = doc.DocumentNode.SelectSingleNode("//img").Attributes["src"].Value;
+                var publishDate = doc.DocumentNode.SelectSingleNode("//h2[2]").InnerText.Trim();
+                var tpe = doc.DocumentNode.SelectSingleNode("//h2[1]").InnerText.Trim();
 
-                ArtModel mo = new ArtModel()
+                ArtMovie m = new ArtMovie()
                 {
-                    Name = name,
-                    Age = age,
-                    Country = country,
-                    Rate = rate,
-                    PictrueUrl =url
+                    Title = title,
+                    Url = linker,
+                    Description = desc,
+                    CoverLink = image,
+                    PublishDate = publishDate,
+                    Type = tpe
                 };
 
                 if (this._isNeedDownloadCover)
                 {
                     if (this.cp == null)
                     {
-                        this.cp = new CoverProcessor("Models");
+                        this.cp = new CoverProcessor("Covers");
                     }
-                    mo.PictureFile = cp.save(url, name + ".jpg");
+                    m.CoverFile = cp.save(image, title + ".jpg");
                 }
-                list.Add(mo);
+                list.Add(m);
+
             }
+            return list;
+        }
+
+        public List<ArtModel> GetAllModels()
+        {
+            var urlModel = "http://www.x-art.com/index.php?show=model&pref=items&page=######&order=recent&catname=";
+
+            List<ArtModel> list = new List<ArtModel>();
+            
+            var sep = new string[] {"<!--------------------------------------- ITEM -->","<!--------------------------------------- finItem -->"};
+            HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
+
+            for (int i = 1; i < 13; i++)
+            {
+                var u = urlModel.Replace("######", i.ToString());
+                var html = wc.DownloadString(u);
+                var itemHtml = html.Split(sep, StringSplitOptions.RemoveEmptyEntries);
+                List<string> items = new List<string>();
+                Console.WriteLine(itemHtml.Length + " html分段");
+                for (int j = 0; j < itemHtml.Length; j++)
+                {
+                    itemHtml[j] = itemHtml[j].Trim().Replace("\\n", "");
+                    itemHtml[j] = itemHtml[j].Trim().Replace("\\r", "");
+                    itemHtml[j] = itemHtml[j].Replace("\\", "");
+                    itemHtml[j] = itemHtml[j].Trim();
+                    if (itemHtml[j]!="")
+                    {
+                        items.Add(itemHtml[j]);
+                    }
+                }
+
+
+                for (int k = 1; k < items.Count; k++)
+		    	{
+                    doc.LoadHtml(items[k]);
+                    if (doc.DocumentNode.SelectSingleNode("//h1")==null)
+                    {
+                        continue;
+                    }
+
+                    var name = doc.DocumentNode.SelectSingleNode("//h1").InnerText;
+                    var country = doc.DocumentNode.SelectNodes("//h2")[1].InnerText;
+                    var age = doc.DocumentNode.SelectSingleNode("//h2").InnerText;
+
+                    var rate = "";
+                    var url = doc.DocumentNode.SelectSingleNode("//a").Attributes["href"].Value;
+                    var picturnUrl = doc.DocumentNode.SelectSingleNode("//img").Attributes["src"].Value;
+                    ArtModel mo = new ArtModel()
+                    {
+                        Name = name,
+                        Age = age,
+                        Country = country,
+                        Rate = rate,
+                        PictrueUrl = picturnUrl,
+                        ModelURL  = url
+                    };
+
+                    if (this._isNeedDownloadCover)
+                    {
+                        if (this.cp == null)
+                        {
+                            this.cp = new CoverProcessor("Models");
+                        }
+                        mo.PictureFile = cp.save(mo.PictrueUrl, name + ".jpg");
+                    }
+                    list.Add(mo);
+                }
+
+            }
+
+            
             return list;
         }
 
