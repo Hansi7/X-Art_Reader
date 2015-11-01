@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "X-Art_View", "X-Art_View\X-Art_View.csproj", "{E7ACED6C-0F10-4682-AE04-31700F2F3627}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestMagnetGet", "TestMagnetGet\TestMagnetGet.csproj", "{FCE9ABE0-429D-41C6-A32D-5996F1338E6C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +25,16 @@ Global
 		{E7ACED6C-0F10-4682-AE04-31700F2F3627}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{E7ACED6C-0F10-4682-AE04-31700F2F3627}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{E7ACED6C-0F10-4682-AE04-31700F2F3627}.Release|x86.ActiveCfg = Release|Any CPU
+		{FCE9ABE0-429D-41C6-A32D-5996F1338E6C}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{FCE9ABE0-429D-41C6-A32D-5996F1338E6C}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{FCE9ABE0-429D-41C6-A32D-5996F1338E6C}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{FCE9ABE0-429D-41C6-A32D-5996F1338E6C}.Debug|x86.ActiveCfg = Debug|x86
+		{FCE9ABE0-429D-41C6-A32D-5996F1338E6C}.Debug|x86.Build.0 = Debug|x86
+		{FCE9ABE0-429D-41C6-A32D-5996F1338E6C}.Release|Any CPU.ActiveCfg = Release|x86
+		{FCE9ABE0-429D-41C6-A32D-5996F1338E6C}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{FCE9ABE0-429D-41C6-A32D-5996F1338E6C}.Release|Mixed Platforms.Build.0 = Release|x86
+		{FCE9ABE0-429D-41C6-A32D-5996F1338E6C}.Release|x86.ActiveCfg = Release|x86
+		{FCE9ABE0-429D-41C6-A32D-5996F1338E6C}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

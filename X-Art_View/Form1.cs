@@ -277,5 +277,89 @@ namespace X_Art_View
         {
             Clipboard.SetText(lbl_title.Text);
         }
+        #region Table2
+        private void btn_search_Click(object sender, EventArgs e)
+        {
+            panel_tab2Control.Enabled = false;
+            BackgroundWorker worker = new BackgroundWorker();
+            worker.DoWork += new DoWorkEventHandler(worker_DoWork);
+            worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(worker_RunWorkerCompleted);
+            worker.RunWorkerAsync();
+        }
+
+        private void btn_pasteAndSearch_Click(object sender, EventArgs e)
+        {
+            txt_keyword.Text = Clipboard.GetText();
+            btn_search_Click(sender, e);
+        }
+
+        void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (e.Error!=null)
+            {
+                listView1.Items.Add(new ListViewItem(e.Error.Message));
+                listView1.Items.Add(new ListViewItem("===Error==="));
+                panel_tab2Control.Enabled = true;
+            }
+
+            var result = e.Result as List<MagnetResult>;
+            if (result!=null)
+            {
+                foreach (var item in result)
+                {
+                    ListViewItem li = new ListViewItem(item.Title);
+                    li.SubItems.Add(item.Size);
+                    li.SubItems.Add(item.MagLink);
+
+                    listView1.Items.Add(li);
+                }
+            }
+
+            listView1.Items.Add(new ListViewItem("====="));
+            panel_tab2Control.Enabled = true;
+
+        }
+
+        void worker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            MagnetGet get = new MagnetGet();
+            List<MagnetResult> res = new List<MagnetResult>();
+            if (rb_katcr.Checked)
+            {
+                res = get.GetMagLink_Kat_cr(txt_keyword.Text);
+            }
+            else
+            {
+                res = get.GetMagLink_Extratorrent_cc(txt_keyword.Text);
+            }
+            e.Result = res;
+        }
+        private void 复制磁力链接地址ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count==1)
+            {
+                Clipboard.SetText(listView1.Items[listView1.SelectedIndices[0]].SubItems[2].Text.ToString());
+            }
+        }
+
+        private void btn_Clear_tab2_Click(object sender, EventArgs e)
+        {
+            listView1.Items.Clear();
+        }
+
+        #endregion
+
+        private void btn_GetMagLink_Click(object sender, EventArgs e)
+        {
+            tabControl1.SelectTab(1);
+
+            txt_keyword.Text = lbl_title.Text;
+            btn_search_Click(sender, e);
+        }
+
+
+
+
+
     }
 }

@@ -12,7 +12,14 @@ namespace TestMagnetGet
         static void Main(string[] args)
         {
             MagnetGet mg = new MagnetGet();
-            mg.TryToFind("X-art");
+            Console.WriteLine("input keyword to search!");
+            var keyword = Console.ReadLine();
+            var rrrr =  mg.GetMagLink_Extratorrent_cc("A Night In Vegas");
+            foreach (var item in rrrr)
+            {
+                Console.WriteLine(item.ToString());
+            }
+            Console.ReadKey();
         }
 
         static void mg_GetDone(object sender, EventArgs e)

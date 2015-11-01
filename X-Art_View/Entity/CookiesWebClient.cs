@@ -62,5 +62,7 @@ namespace X_Art_View
 
             return base.DownloadString(address);
         }
+
+
     }
 }
