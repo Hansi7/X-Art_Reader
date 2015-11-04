@@ -76,13 +76,12 @@ namespace X_Art_View
                     }
                     m.CoverFile = cp.save(image, title + ".jpg");
                 }
+                OnCompleteOneItem(m.Title);
                 list.Add(m);
 
             }
             return list;
         }
-
-
         public List<ArtMovie> GetAllUpdatePage(int p)
         {
             var html = wc.DownloadString("http://www.x-art.com/index.php?show=galleries&pref=items&page=" + p + "&catname=all&order=recent");
@@ -133,12 +132,12 @@ namespace X_Art_View
                     }
                     m.CoverFile = cp.save(image, title + ".jpg");
                 }
+                OnCompleteOneItem(m.Title);
                 list.Add(m);
 
             }
             return list;
         }
-
         public List<ArtModel> GetAllModels()
         {
             var urlModel = "http://www.x-art.com/index.php?show=model&pref=items&page=######&order=recent&catname=";
@@ -201,6 +200,7 @@ namespace X_Art_View
                         }
                         mo.PictureFile = cp.save(mo.PictrueUrl, name + ".jpg");
                     }
+                    OnCompleteOneItem(mo.Name);
                     list.Add(mo);
                 }
 
@@ -209,6 +209,13 @@ namespace X_Art_View
             
             return list;
         }
-
+        public event EventHandler<OneCompleteEventArg> CompleteOneItem;
+        protected virtual void OnCompleteOneItem(string something)
+        {
+            if (this.CompleteOneItem != null)
+            {
+                this.CompleteOneItem(this, new OneCompleteEventArg(something));
+            }
+        }
     }
 }

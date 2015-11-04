@@ -51,6 +51,7 @@
     <Compile Include="Entity\ArtModel.cs" />
     <Compile Include="Entity\ArtMovie.cs" />
     <Compile Include="CoverProcessor.cs" />
+    <Compile Include="Entity\ArtMovieSaveLoad.cs" />
     <Compile Include="Entity\CookiesWebClient.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -61,6 +62,7 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="HegrePage.cs" />
+    <Compile Include="IMovieScraper.cs" />
     <Compile Include="MagnetGet.cs" />
     <Compile Include="Entity\MagnetResult.cs" />
     <Compile Include="ModelViewer.cs">

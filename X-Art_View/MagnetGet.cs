@@ -13,12 +13,27 @@ namespace X_Art_View
         {
             HtmlDocument doc = new HtmlDocument();
             List<MagnetResult> result = new List<MagnetResult>();
-            doc.LoadHtml(wc.DownloadString("http://kat.cr/usearch/"+ keyWord));
+
+            doc.LoadHtml(wc.DownloadString("http://kat.cr/usearch/" + keyWord));
             var nodes1 = doc.DocumentNode.SelectNodes("//tr[@class='odd']");
             var nodes2 = doc.DocumentNode.SelectNodes("//tr[@class='even']");
-            Console.WriteLine(nodes1.Count);
-            Console.WriteLine(nodes2.Count);
-            var nodesTotal = nodes1.Union(nodes2);
+
+            IEnumerable<HtmlNode> nodesTotal = null;
+            //没有结果
+            if (nodes1==null)
+            {
+                return result;
+            }
+            //只有一个结果
+            if (nodes2==null)
+            {
+                nodesTotal = nodes1;
+            }
+            //有多个结果
+            else
+            {
+                nodesTotal = nodes1.Union(nodes2);
+            }
             foreach (var item in nodesTotal)
             {
                 var name = item.SelectSingleNode(".//a[@class='cellMainLink']").InnerText;
@@ -29,10 +44,11 @@ namespace X_Art_View
                 {
                     Title = name,
                     MagLink = link,
-                    Size = size.Replace("&nbsp;","")
+                    Size = size.Replace("&nbsp;", "")
                 };
                 result.Add(r);
             }
+
             return result;
         }
         public List<MagnetResult> GetMagLink_Extratorrent_cc(string keyWord)
@@ -53,13 +69,13 @@ namespace X_Art_View
             {
                 trHtml.Add(item.OuterHtml);
             }
-            var fn = System.DateTime.Now.ToString("yyyy-MM-dd HHmmss") + ".txt";
+            //var fn = System.DateTime.Now.ToString("yyyy-MM-dd HHmmss") + ".txt";
 
-            for (int i = 0; i < trHtml.Count; i++)
-            {
-                System.IO.File.AppendAllText(fn, trHtml[i] + "\r\n");
-                
-            }
+            //for (int i = 0; i < trHtml.Count; i++)
+            //{
+            //    System.IO.File.AppendAllText(fn, trHtml[i] + "\r\n");
+
+            //}
             //System.Diagnostics.Process.Start(fn);
 
             foreach (var item in trHtml)
@@ -71,14 +87,14 @@ namespace X_Art_View
                 var itemlink = doc.DocumentNode.SelectSingleNode("//td[@class='tli']/a").Attributes["href"].Value;
                 var size = doc.DocumentNode.SelectSingleNode("//td[@class='tli']").NextSibling.InnerText;
                 System.Net.WebClient wc2 = new System.Net.WebClient();
-                var itemHtml =  wc2.DownloadString("http://extratorrent.cc" + itemlink);
+                var itemHtml = wc2.DownloadString("http://extratorrent.cc" + itemlink);
                 doc.LoadHtml(itemHtml);
                 var link = doc.DocumentNode.SelectSingleNode("//a[@title='Magnet link']").Attributes["href"].Value;
                 MagnetResult r = new MagnetResult()
                 {
                     Title = name,
                     MagLink = link,
-                    Size = size.Replace("&nbsp;","")
+                    Size = size.Replace("&nbsp;", "")
                 };
                 result.Add(r);
             }

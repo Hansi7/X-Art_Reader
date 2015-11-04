@@ -12,7 +12,7 @@ namespace X_Art_View.DB
         { 
             
         }
-        string connectString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=.\art.accdb";
+        //string connectString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=.\art.accdb";
         OleDbConnection conn = new OleDbConnection(@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=.\art.accdb");
         public void CloseConn()
         {

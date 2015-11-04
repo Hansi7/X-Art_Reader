@@ -62,21 +62,15 @@ namespace X_Art_View
             sfd.Filter = "dat file|*.dat";
             if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                System.IO.FileStream fs = new System.IO.FileStream(sfd.FileName, System.IO.FileMode.Create);
-                BinaryFormatter bf = new BinaryFormatter();
-                bf.Serialize(fs, AllList);
-                fs.Close();
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < AllList.Count; i++)
+                if (ArtMovieSaveLoad.Save(sfd.FileName, this.AllList))
                 {
-                    sb.AppendLine(AllList[i].ToString());
+                    MessageBox.Show("Saved!", "信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-                System.IO.File.WriteAllText(System.IO.Path.ChangeExtension(sfd.FileName, "txt"), sb.ToString());
-
-                MessageBox.Show("Saved!", "信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                else
+                {
+                    
+                }
             }
-
-
         }
 
         private void btn_Load_Click(object sender, EventArgs e)
@@ -85,14 +79,12 @@ namespace X_Art_View
             ofd.Filter = "dat File|*.dat";
             if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                AllList.Clear();
-                using (System.IO.FileStream fs = new System.IO.FileStream(ofd.FileName, System.IO.FileMode.Open))
+                var mvs = ArtMovieSaveLoad.Load(ofd.FileName);
+                if (mvs.Count>0)
                 {
-                    BinaryFormatter bf = new BinaryFormatter();
-                    this.AllList = bf.Deserialize(fs) as List<ArtMovie>;
-                    MessageBox.Show("Loaded!");
+                    this.AllList.Clear();
+                    this.AllList = mvs;
                 }
-                
             }
             
         }
