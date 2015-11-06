@@ -2,61 +2,113 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Data.OleDb;
+//using System.Data.OleDb;
+using System.Data.SQLite;
 
 namespace X_Art_View.DB
 {
     public class DBControl
     {
         public DBControl()
-        { 
-            
-        }
-        //string connectString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=.\art.accdb";
-        OleDbConnection conn = new OleDbConnection(@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=.\art.accdb");
-        public void CloseConn()
         {
-            conn.Close();
-            
+            DBConfig.DatabaseFile = System.AppDomain.CurrentDomain.BaseDirectory + "Art.db";
         }
-        public bool Insert(ArtMovie m)
+        public void Insert(ArtMovie m)
         {
-            using (OleDbCommand comm = new OleDbCommand("insert into x (title,referurl,coverurl,coverurl2,coverfile,coverfile2,ismovie,localpath,datepublish,tag) values(@t, @r,@c,@c2,@cf,@cf2,@i,@local,@date,@tag) ",conn))
+            Dictionary<string, object> dic = new Dictionary<string, object>();
+            dic["title"] = m.Title;
+            dic["referurl"] = m.Url;
+            dic["coverurl"] = m.CoverLink;
+            dic["coverurl2"] = m.CoverLink2;
+            dic["coverfile"] = m.CoverFile;
+            dic["coverfile2"] = m.CoverFile2;
+            dic["ismovie"] = m.Type.IndexOf("mages") != -1 ? true : false;
+            dic["localpath"] = "";
+            dic["datepublish"] = m.PublishDate;
+            dic["tag"] = "";
+
+            #region OLD 旧的方法
+            using (SQLiteConnection conn = new SQLiteConnection(DBConfig.DataSource))
             {
-                comm.Parameters.Add("@t", OleDbType.VarWChar).Value =m.Title;
-                comm.Parameters.Add("@r", OleDbType.VarWChar).Value =m.Url;
-                comm.Parameters.Add("@c", OleDbType.VarWChar).Value = m.CoverLink;
-                comm.Parameters.Add("@c2", OleDbType.VarWChar).Value = m.CoverLink2;
-                comm.Parameters.Add("@cf", OleDbType.VarWChar).Value = m.CoverFile;
-                comm.Parameters.Add("@cf2", OleDbType.VarWChar).Value = m.CoverFile2;
-                if (m.Type.IndexOf("mages")!=-1)
-                {
-                    comm.Parameters.Add("@i", OleDbType.Boolean).Value = false;
-                }
-                else
-                {
-                    comm.Parameters.Add("@i", OleDbType.Boolean).Value = true;
-                }
-                comm.Parameters.Add("@local", OleDbType.VarWChar).Value = "";
-                comm.Parameters.Add("@date", OleDbType.Date).Value = DateTime.Parse(m.PublishDate);
-                comm.Parameters.Add("@tag", OleDbType.VarWChar).Value = "";
-                if (conn.State== System.Data.ConnectionState.Closed)
+                using (SQLiteCommand cmd = new SQLiteCommand())
                 {
                     conn.Open();
-                }
-                
-                if (comm.ExecuteNonQuery()>0)
-                {
+                    cmd.Connection = conn;
+
+                    SQLiteHelper sh = new SQLiteHelper(cmd);
+
+                    sh.Insert("X", dic);
                     conn.Close();
-                    return true;
-                }
-                else
-                {
-                    conn.Close();
-                    return false;
                 }
             }
+            #endregion
         }
-        
+
+        public void InsertMany(List<ArtMovie> arts)
+        {
+            using (SQLiteConnection conn = new SQLiteConnection(DBConfig.DataSource))
+            {
+                conn.Open();
+                var trans = conn.BeginTransaction();
+
+                SQLiteCommand cmd = new SQLiteCommand();
+                SQLiteHelper sh = new SQLiteHelper(cmd);
+                    foreach (var m in arts)
+                    {
+                        Dictionary<string, object> dic = new Dictionary<string, object>();
+                        dic["title"] = m.Title;
+                        dic["referurl"] = m.Url;
+                        dic["coverurl"] = m.CoverLink;
+                        dic["coverurl2"] = m.CoverLink2;
+                        dic["coverfile"] = m.CoverFile;
+                        dic["coverfile2"] = m.CoverFile2;
+                        dic["ismovie"] = m.Type.IndexOf("mages") != -1 ? true : false;
+                        dic["localpath"] = "";
+                        dic["datepublish"] = m.PublishDate;
+                        dic["tag"] = "";
+                        cmd.Connection = conn;
+                        
+                        sh.Insert("X", dic);
+                    }
+                
+                trans.Commit();
+                conn.Close();
+            }
+        }
+
+        public void CreateDatabase()
+        {
+            using (SQLiteConnection conn = new SQLiteConnection(DBConfig.DataSource))
+            {
+                SQLiteConnection.CreateFile(DBConfig.DatabaseFile);
+                //System.Data.SQLite.SQLiteConnectionStringBuilder connstr = new System.Data.SQLite.SQLiteConnectionStringBuilder();
+                //connstr.DataSource = DBConfig.DataSource;
+                ////connstr.Password = "admin";//设置密码，SQLite ADO.NET实现了数据库密码保护
+                //conn.ConnectionString = connstr.ToString();
+                conn.Open();
+                //创建表
+                System.Data.SQLite.SQLiteCommand cmd = new System.Data.SQLite.SQLiteCommand();
+                cmd.Connection = conn;
+                System.Data.SQLite.SQLiteHelper help = new SQLiteHelper(cmd);
+                SQLiteTable table = new SQLiteTable("X");
+                table.Columns.Add(new SQLiteColumn("ID", ColType.Integer, true, true, true, null));
+                table.Columns.Add(new SQLiteColumn("Title", ColType.Text));
+                table.Columns.Add(new SQLiteColumn("ReferURL", ColType.Text));
+                table.Columns.Add(new SQLiteColumn("CoverURL", ColType.Text));
+                table.Columns.Add(new SQLiteColumn("CoverURL2", ColType.Text));
+                table.Columns.Add(new SQLiteColumn("CoverFile", ColType.Text));
+                table.Columns.Add(new SQLiteColumn("CoverFile2", ColType.Text));
+                table.Columns.Add(new SQLiteColumn("IsMovie", ColType.Boolean));
+                table.Columns.Add(new SQLiteColumn("LocalPath", ColType.Text));
+                table.Columns.Add(new SQLiteColumn("DatePublish", ColType.Text));
+                table.Columns.Add(new SQLiteColumn("Tag", ColType.Text));
+
+                help.CreateTable(table);
+
+                conn.Close();
+            }
+        }
+
+
     }
 }

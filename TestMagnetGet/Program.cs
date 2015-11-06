@@ -21,18 +21,16 @@ namespace TestMagnetGet
         {
             HegrePage hegre = new HegrePage();
             hegre.CompleteOneItem += hegre_CompleteOneItem;
-            hegre.IsDownloadBoardPicture = true;
+            hegre.IsDownloadExtraPicture = true;
             hegre.IsDownloadCoverPicture = true;
             //var movies = hegre.GetGalleries(1);
-            var movies = hegre.GetVideos(1);
+            var movies = hegre.GetVideoPage(1);
             ArtMovieSaveLoad.Save("Hegre100.dat", movies);
             foreach (var item in movies)
             {
                 Console.WriteLine(item.ToString());
             }
             Done();
-
-
         }
 
         static void hegre_CompleteOneItem(object sender, OneCompleteEventArg e)

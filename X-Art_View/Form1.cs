@@ -15,79 +15,26 @@ namespace X_Art_View
         public Form1()
         {
             InitializeComponent();
-            vp.IsDownloadCoverPicture = true;
         }
-
-        #region Video
-        private void bgw_VideoWorker_DoWork(object sender, DoWorkEventArgs e)
+        private void Form1_Load(object sender, EventArgs e)
         {
-            for (int i = 1; i < nud_maxPage.Value + 1; i++)
-            {
-                AllList.AddRange(vp.GetVideoPage(i));
-                bgw_VideoWorker.ReportProgress((int)(100 * i / (double)nud_maxPage.Value), i.ToString() + "/" + nud_maxPage.Value.ToString());
-            }
+            initComboBox();
         }
-
-        private void bgw_VideoWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        void initComboBox()
         {
-            this.progressBar1.Value = e.ProgressPercentage;
-            this.lbl_prograss.Text = e.UserState as string;
+            ArtPage x = new ArtPage();
+            HegrePage hegre = new HegrePage();
+
+            cb_scraper.Items.Add(x);
+            cb_scraper.Items.Add(hegre);
+
+            cb_scraper.DisplayMember = "DisplayName";
         }
-
-        private void bgw_VideoWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            System.IO.FileStream fs = new System.IO.FileStream(AppDomain.CurrentDomain.BaseDirectory + "\\VideoUpdates_AutoSave" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".dat", System.IO.FileMode.Create);
-            BinaryFormatter bf = new BinaryFormatter();
-            bf.Serialize(fs, AllList);
-            fs.Close();
-            MessageBox.Show("Work is Done & Auto Saved!", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
-        private void btn_Video_Click(object sender, EventArgs e)
-        {
-            AllList.Clear();
-            bgw_VideoWorker.RunWorkerAsync();
-        } 
-        #endregion
-
 
         List<ArtMovie> AllList = new List<ArtMovie>();
         List<ArtModel> AllModels = new List<ArtModel>();
-
         ArtPage vp = new ArtPage();
 
-        private void btn_Save_Click(object sender, EventArgs e)
-        {
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = "dat file|*.dat";
-            if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                if (ArtMovieSaveLoad.Save(sfd.FileName, this.AllList))
-                {
-                    MessageBox.Show("Saved!", "信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                else
-                {
-                    
-                }
-            }
-        }
-
-        private void btn_Load_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "dat File|*.dat";
-            if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                var mvs = ArtMovieSaveLoad.Load(ofd.FileName);
-                if (mvs.Count>0)
-                {
-                    this.AllList.Clear();
-                    this.AllList = mvs;
-                }
-            }
-            
-        }
 
         #region UI Control
 
@@ -98,7 +45,7 @@ namespace X_Art_View
             if (AllList.Count > 0 && AllList.Count > currentIndex + 1)
             {
                 currentIndex += 1;
-                SetShowBox();
+                SetShowBox(null);
             }
         }
 
@@ -107,28 +54,54 @@ namespace X_Art_View
             if (AllList.Count > 0 && currentIndex > 0)
             {
                 currentIndex += -1;
-                SetShowBox();
+                SetShowBox(null);
             }
 
         }
 
-        private void SetShowBox()
+        /// <summary>
+        /// show detail
+        /// </summary>
+        /// <param name="movie">if this param is null ,the show the currentindex Movie,else show the param movie</param>
+        private void SetShowBox(ArtMovie movie)
         {
             try
             {
-                this.trackBar1.Maximum = AllList.Count;
-                this.trackBar1.Minimum = 1;
-                this.trackBar1.Value = currentIndex + 1;
-                this.lbl_ViewProgress.Text = (currentIndex + 1) + "/" + AllList.Count;
-                var m = this.AllList[currentIndex];
-                
-                this.lbl_desc.Text = m.Description;
-                this.lbl_title.Text = m.Title;
-                this.lbl_type.Text = m.Type;
-                this.pictureBox1.Image = Image.FromFile(m.CoverFile);
-                this.pictureBox1.Tag = m.CoverFile;
+                if (movie == null)
+                {
+                    this.trackBar1.Maximum = AllList.Count;
+                    this.trackBar1.Minimum = 1;
+                    this.trackBar1.Value = currentIndex + 1;
+                    this.lbl_ViewProgress.Text = (currentIndex + 1) + "/" + AllList.Count;
+
+                    var m = this.AllList[currentIndex];
+                    this.lbl_desc.Text = m.Description;
+                    this.lbl_title.Text = m.Title;
+                    this.lbl_type.Text = m.Type;
+                    if (!string.IsNullOrEmpty(m.CoverFile))
+                    {
+                        this.pictureBox1.Image = Image.FromFile(m.CoverFile);
+                        this.pictureBox1.Tag = m.CoverFile;
+                    }
+                }
+                else
+                {
+                    this.trackBar1.Maximum = AllList.Count;
+                    this.trackBar1.Minimum = 1;
+                    this.trackBar1.Value = AllList.Count;
+                    this.lbl_ViewProgress.Text = this.trackBar1.Value + "/" + (AllList.Count+1);
+                    var m = movie;
+                    this.lbl_desc.Text = m.Description;
+                    this.lbl_title.Text = m.Title;
+                    this.lbl_type.Text = m.Type;
+                    if (!string.IsNullOrEmpty(m.CoverFile))
+                    {
+                        this.pictureBox1.Image = Image.FromFile(m.CoverFile);
+                        this.pictureBox1.Tag = m.CoverFile;
+                    }
+                }
             }
-            catch (Exception)
+            catch (Exception err)
             {
 
             }
@@ -140,55 +113,31 @@ namespace X_Art_View
         {
             if (togleNumber++ % 2 == 0)
             {
-                this.Size = new Size(this.Size.Width, 620);
+                this.Size = new Size(this.Size.Width, 736);
             }
             else
             {
-                this.Size = new Size(this.Size.Width, 137);
+                this.Size = new Size(this.Size.Width, 200);
             }
         }
 
         private void trackBar1_ValueChanged(object sender, EventArgs e)
         {
             this.currentIndex = trackBar1.Value - 1;
-            SetShowBox();
+            SetShowBox(null);
         }
-
-        #endregion
-
-
-
-        #region AllUpdates
-        private void bgw_AllUpdatesWorker_DoWork(object sender, DoWorkEventArgs e)
+        private void pictureBox1_DoubleClick(object sender, EventArgs e)
         {
-            for (int i = 1; i < nud_maxPage.Value + 1; i++)
+            try
+            {
+                System.Diagnostics.Process.Start((sender as PictureBox).Tag.ToString());
+            }
+            catch
             {
 
-                AllList.AddRange(vp.GetAllUpdatePage(i));
-                bgw_AllUpdatesWorker.ReportProgress((int)(100 * i / (double)nud_maxPage.Value), i.ToString() + "/" + nud_maxPage.Value.ToString());
             }
-        }
 
-        private void bgw_AllUpdatesWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            this.progressBar1.Value = e.ProgressPercentage;
-            this.lbl_prograss.Text = e.UserState as string;
         }
-
-        private void bgw_AllUpdatesWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            System.IO.FileStream fs = new System.IO.FileStream(AppDomain.CurrentDomain.BaseDirectory + "\\AllUpdates_AutoSave" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".dat", System.IO.FileMode.Create);
-            BinaryFormatter bf = new BinaryFormatter();
-            bf.Serialize(fs, AllList);
-            fs.Close();
-            MessageBox.Show("Work is Done & Auto Saved!", "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
-        private void btn_AllUpdates_Click(object sender, EventArgs e)
-        {
-            AllList.Clear();
-            bgw_AllUpdatesWorker.RunWorkerAsync();
-        } 
         #endregion
 
 
@@ -239,36 +188,21 @@ namespace X_Art_View
             System.Diagnostics.Process.Start("http://extratorrent.cc/search/?search=" + this.lbl_title.Text + "&new=1&x=0&y=0");
         }
 
+        private void btn_GetMagLink_Click(object sender, EventArgs e)
+        {
+            tabControl1.SelectTab(1);
 
+            txt_keyword.Text = lbl_title.Text;
+            btn_search_Click(sender, e);
+        }
         #endregion
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            DB.DBControl con = new DB.DBControl();
-            foreach (ArtMovie item in AllList)
-            {
-                con.Insert(item);
-            }
-            MessageBox.Show("Test");
-        }
-
-        private void pictureBox1_DoubleClick(object sender, EventArgs e)
-        {
-            try
-            {
-                System.Diagnostics.Process.Start((sender as PictureBox).Tag.ToString());
-            }
-            catch 
-            {
-                
-            }
-            
-        }
 
         private void 复制该标题ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Clipboard.SetText(lbl_title.Text);
         }
+
+
         #region Table2
         private void btn_search_Click(object sender, EventArgs e)
         {
@@ -341,17 +275,154 @@ namespace X_Art_View
 
         #endregion
 
-        private void btn_GetMagLink_Click(object sender, EventArgs e)
+        #region DB controls
+        private void button1_Click(object sender, EventArgs e)
         {
-            tabControl1.SelectTab(1);
+            DB.DBControl con = new DB.DBControl();
+            if (!System.IO.File.Exists(DB.DBConfig.DatabaseFile))
+            {
+                con.CreateDatabase();
+            }
 
-            txt_keyword.Text = lbl_title.Text;
-            btn_search_Click(sender, e);
+            con.InsertMany(AllList);
+            MessageBox.Show("Done!");
+        }
+        private void btn_Save_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "dat file|*.dat";
+            if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                if (ArtMovieSaveLoad.Save(sfd.FileName, this.AllList))
+                {
+                    MessageBox.Show("Saved!", "信息", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+
+                }
+            }
         }
 
+        private void btn_Load_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "dat File|*.dat";
+            if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                var mvs = ArtMovieSaveLoad.Load(ofd.FileName);
+                if (mvs.Count > 0)
+                {
+                    this.AllList.Clear();
+                    this.AllList = mvs;
+                }
+            }
+
+        }
+        #endregion
+
+        private void btn_scraperVideo_Click(object sender, EventArgs e)
+        {
+            var scraper = (cb_scraper.SelectedItem as IMovieScraper);
+            if (!isSelectedScraper(scraper)) return;
+            BackgroundWorker MainWorker = WorkerInit();
+            Func<int, List<ArtMovie>> fun = new Func<int, List<ArtMovie>>(scraper.GetVideoPage);
+            MainWorker.RunWorkerAsync(fun);
+        }
+        private void btn_scraperAllUpdates_Click(object sender, EventArgs e)
+        {
+            var scraper = (cb_scraper.SelectedItem as IMovieScraper);
+            if (!isSelectedScraper(scraper)) return;
+            BackgroundWorker MainWorker = WorkerInit();
+            Func<int, List<ArtMovie>> fun = new Func<int, List<ArtMovie>>(scraper.GetAllUpdate);
+            MainWorker.RunWorkerAsync(fun);
+        }
+        private void btn_scraperPicture_Click(object sender, EventArgs e)
+        {
+            var scraper = (cb_scraper.SelectedItem as IMovieScraper);
+            if (!isSelectedScraper(scraper)) return;
+            BackgroundWorker MainWorker = WorkerInit();
+            Func<int, List<ArtMovie>> fun = new Func<int, List<ArtMovie>>(scraper.GetPicturePage);
+            MainWorker.RunWorkerAsync(fun);
+
+        }
+        private bool isSelectedScraper(IMovieScraper scraper)
+        {
+            if (scraper == null)
+            {
+                MessageBox.Show("Please Select One Scraper First!");
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        private BackgroundWorker WorkerInit()
+        {
+            BackgroundWorker MainWorker = new BackgroundWorker();
+            MainWorker.WorkerReportsProgress = true;
+            MainWorker.WorkerSupportsCancellation = true;
+            MainWorker.DoWork += MainWorker_DoWork;
+            MainWorker.ProgressChanged += MainWorker_ProgressChanged;
+            MainWorker.RunWorkerCompleted += MainWorker_RunWorkerCompleted;
+            return MainWorker;
+        }
+
+        void scraper_CompleteOneItem(object sender, OneCompleteEventArg e)
+        {
+            var movie = e.Tag as ArtMovie;
+            this.AllList.Add(movie);
+            if (cb_UpdateOnceDownloadOne.Checked)
+            {
+                Action<ArtMovie> action = new Action<ArtMovie>(SetShowBox);
+                this.Invoke(action, new ArtMovie[] { movie });
+            }
 
 
+        }
 
+        void MainWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (e.Error!=null)
+            {
+                MessageBox.Show(e.Error.Message);
+            }
+
+            MessageBox.Show("Done");
+        }
+
+        void MainWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            
+        }
+
+        void MainWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            var fun = e.Argument as Func<int, List<ArtMovie>>;
+
+            var scraper = fun.Target as IMovieScraper;
+
+            var pageTo = (int)nud_scraper_page.Value;
+
+            scraper.IsDownloadCoverPicture = cb_scraper_pic1.Checked;
+            scraper.IsDownloadExtraPicture = cb_scraper_pic2.Checked;
+
+            scraper.CompleteOneItem += scraper_CompleteOneItem;
+
+            for (int i = 1; i <= pageTo; i++)
+            {
+                fun.Invoke(i);
+            }
+
+            ArtMovieSaveLoad.Save(AppDomain.CurrentDomain.BaseDirectory + "\\" + scraper.DisplayName + "_AutoSave" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".dat", AllList);
+        }
+
+        private void btn_ClearAll_Click(object sender, EventArgs e)
+        {
+            this.AllList.Clear();
+        }
 
     }
 }
