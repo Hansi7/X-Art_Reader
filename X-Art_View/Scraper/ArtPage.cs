@@ -129,7 +129,14 @@ namespace X_Art_View
                     desc = descNullable.InnerText;
                 }
                 var linker = doc.DocumentNode.SelectSingleNode("//a").Attributes["href"].Value;
-                var image = doc.DocumentNode.SelectSingleNode("//img").Attributes["src"].Value;
+                var image = doc.DocumentNode.SelectSingleNode("//img").Attributes[0].Value;
+                System.Text.RegularExpressions.Regex reg = new System.Text.RegularExpressions.Regex("http://.*?jpg");
+                var matches = reg.Matches(image);
+
+                if (matches.Count>0)
+                {
+                    image = matches[0].ToString();
+                }
                 var publishDate = doc.DocumentNode.SelectSingleNode("//h2").InnerText.Trim();
                 var tpe = doc.DocumentNode.SelectSingleNode("//h2[1]").InnerText.Trim();
 
